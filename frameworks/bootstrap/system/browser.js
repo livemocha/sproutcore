@@ -235,14 +235,17 @@ SC._detectBrowser = function(userAgent, language) {
       - 'chrome'
       - 'safari'
       - 'opera'
+      - 'opera-mini'
+      - 'opera-mobile'
       - 'mobile-safari'
+      - 'android'
       - 'unknown'
 
     @name SC.browser.current
     @type String
     @default 'unknown'
   */
-  browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.chrome ? 'chrome' : browser.safari ? 'safari' : browser.opera ? 'opera' : browser.mobileSafari ? 'mobile-safari' : browser.android ? 'android' : 'unknown';
+  browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.chrome ? 'chrome' : browser.safari ? 'safari' : browser.opera ? 'opera' : browser.operaMini ? 'opera-mini' : browser.operaMobile ? 'opera-mobile' : browser.mobileSafari ? 'mobile-safari' : browser.android ? 'android' : 'unknown';
   return browser;
 };
 
