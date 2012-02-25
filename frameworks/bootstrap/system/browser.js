@@ -76,6 +76,30 @@ SC._detectBrowser = function(userAgent, language) {
     @type Boolean
   */
   browser.isOpera = !!browser.opera;
+  
+  /**
+    @name SC.browser.operaMini
+    @type String
+  */
+  browser.operaMini = /opera mini/.test(userAgent) ? version : 0;
+
+  /**
+    @name SC.browser.isOperaMini
+    @type Boolean
+  */
+  browser.isOperaMini = !!browser.operaMini;
+
+  /**
+    @name SC.browser.operaMobile
+    @type String
+   */
+  browser.operaMobile = /opera mobi/.test(userAgent) ? version : 0;
+
+  /**
+    @name SC.browser.isOperaMobile
+    @type Boolean
+   */
+  browser.isOperaMobile = !!browser.operaMobile;
 
   /**
     @name SC.browser.msie
