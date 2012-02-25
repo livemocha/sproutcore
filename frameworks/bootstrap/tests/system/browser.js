@@ -15,6 +15,8 @@ var cleanBrowser = {
   iPad: 0,
   android: 0,
   opera: 0,
+  operaMini: 0,
+  operaMobile: 0,
   msie: 0,
   mozilla: 0,
   webkit: 0,
@@ -89,6 +91,16 @@ test("Opera Mac 10.62", function() {
 test("Opera Windows 10.62", function() {
   var userAgent = "Opera/9.80 (Windows NT 6.1; U; en) Presto/2.6.30 Version/10.62";
   testUserAgent(userAgent, { version: '9.80', opera: '9.80', current: 'opera', windows: true });
+});
+
+test("Opera Mini 9.80", function() {
+  var userAgent = "Opera/9.80 (J2ME/MIDP; Opera Mini/9 (Compatible; MSIE:9.0; iPhone; BlackBerry9700; AppleWebKit/24.746; U; en) Presto/2.5.25 Version/10.54";
+  testUserAgent(userAgent, { version: '9.80', operaMini: '9.80', current: 'operaMini' });
+});
+
+test("Opera Mobile 9.80", function() {
+  var userAgent = "Opera/9.80 (Android 2.3.4; Linux; Opera Mobi/build-1107180945; U; en-GB) Presto/2.8.149 Version/11.10";
+  testUserAgent(userAgent, { version: '9.80', operaMobile: '9.80', current: 'operaMobile' });
 });
 
 test("Internet Explorer 7.0", function() {

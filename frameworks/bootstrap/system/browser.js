@@ -159,7 +159,7 @@ SC._detectBrowser = function(userAgent, language) {
     @name SC.browser.mobileSafari
     @type String
   */
-  browser.mobileSafari = /apple.*mobile/.test(userAgent) && browser.iOS ? webkitVersion : 0;
+  browser.mobileSafari = /apple.*mobile.*safari/.test(userAgent) && browser.iOS ? webkitVersion : 0;
 
   /**
     @name SC.browser.isMobileSafari
