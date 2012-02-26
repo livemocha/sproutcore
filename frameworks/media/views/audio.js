@@ -130,17 +130,22 @@ SC.AudioView = SC.View.extend(
       for(i=0, listLen = this.degradeList.length; i<listLen; i++){
         switch(this.degradeList[i]){
         case "html5":
-          if(SC.browser.safari){                          
-            context.push('<audio src="'+this.get('value')+'"');
-            if(this.poster){
-              context.push(' poster="'+this.poster+'"');
-            }
-            context.push('/>');
-            this.loaded='html5';
-            return;
+          if(!SC.mediaCapabilities.get('isHTML5AudioSupported'))
+          {
+            break;
           }
-          break;
+          context.push('<audio src="' + value + '"');
+          if (this.poster) {
+            context.push(' poster="' + this.poster + '"');
+          }
+          context.push('/>');
+          this.loaded = 'html5';
+          return;
         case "quicktime":
+          if(!SC.mediaCapabilities.get('isQuicktimeSupported'))
+          {
+            break;
+          }
           if(SC.browser.msie){
             context.push('<object id="qt_event_source" '+
                         'classid="clsid:CB927D12-4FF7-4a9e-A169-56E4B8A75598" '+         
@@ -178,6 +183,10 @@ SC.AudioView = SC.View.extend(
           this.loaded='quicktime';
           return;
         case "flash":
+          if(!SC.mediaCapabilities.get('isFlashSupported'))
+          {
+            break;
+          }
           var flashURL= sc_static('videoCanvas.swf');
 
           var movieURL = this.get('value');

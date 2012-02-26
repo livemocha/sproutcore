@@ -8,6 +8,7 @@
 
 sc_require('views/controls');
 sc_require('views/mini_controls');
+sc_require('media_capablities');
 
 /** 
   @class
@@ -151,20 +152,22 @@ SC.VideoView = SC.View.extend(
       for(i=0, listLen = this.degradeList.length; i<listLen; i++){
         switch(this.degradeList[i]){
         case "html5":
-          if(SC.browser.safari){
-            context.push('<video src="'+this.get('value')+'"');
-            if(this.poster){
-              context.push(' poster="'+this.poster+'"');
-            }
-            // if(SC.browser.touch){
-            //               context.push(' controls="true"');
-            //             }
-            context.push('/>');
-            this.loaded='html5';
-            return;
+          if(!SC.mediaCapabilities.get('isHTML5VideoSupported'))
+          {
+            break;
           }
-          break;
+          context.push('<video src="'+this.get('value')+'"');
+          if(this.poster){
+            context.push(' poster="'+this.poster+'"');
+          }
+          context.push('/>');
+          this.loaded = 'html5';
+          return;
         case "quicktime":
+          if(!SC.mediaCapabilities.get('isQuicktimeSupported'))
+          {
+            break;
+          }
           if(SC.browser.msie){
             context.push('<object id="qt_event_source" '+
                         'classid="clsid:CB927D12-4FF7-4a9e-A169-56E4B8A75598" '+         
@@ -202,6 +205,10 @@ SC.VideoView = SC.View.extend(
           this.loaded='quicktime';
           return;
         case "flash":
+          if(!SC.mediaCapabilities.get('isFlashSupported'))
+          {
+            break;
+          }
           var flashURL= sc_static('videoCanvas.swf');
 
           var movieURL = this.get('value');
@@ -768,6 +775,37 @@ SC.VideoView = SC.View.extend(
     return value;
   }
   
+});
+
+/** 
+  Static method mixins.
+*/
+SC.VideoView.mixin({
+  /**
+   * This method returns whether the video tag is supported in the current browser.
+   */
+  isHTML5Supported : function()
+  {
+    if (SC.browser.safari && SC.browser.compareVersion("5.0") < 0) {
+      return NO;
+    }
+    if (SC.browser.chrome && SC.browser.compareVersion("16.0") < 0) {
+      return NO;
+    }
+    if (SC.browser.mozilla && SC.browser.compareVersion("3.6") < 0) {
+      return NO;
+    }
+    if (SC.browser.msie && SC.browser.compareVersion("9.0") < 0) {
+      return NO;
+    }
+    context.push('<video src="'+this.get('value')+'"');
+    if(this.poster){
+      context.push(' poster="'+this.poster+'"');
+    }
+    context.push('/>');
+    this.loaded = 'html5';
+    return;
+  }.property().cacheable()
 });
 
 /** 
