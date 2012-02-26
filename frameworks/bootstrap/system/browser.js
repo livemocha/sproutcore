@@ -19,7 +19,7 @@ SC._detectBrowser = function(userAgent, language) {
   // Check for an opera spoof first
   isOperaSpoof = false;
   if (userAgent.match(/opera/)) {
-    version = browser.version = userAgent.match(/opera[\/ ](.+?) /)[1];
+    version = browser.version = userAgent.match(/.*(opera|version)[\/ ](.+?)( |$)/)[2];
     isOperaSpoof = true;
   } else {
     // Gibberish at the end is to determine when the browser version is
