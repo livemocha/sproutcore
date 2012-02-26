@@ -95,12 +95,12 @@ test("Opera Windows 10.62", function() {
 
 test("Opera Mini 9.80", function() {
   var userAgent = "Opera/9.80 (J2ME/MIDP; Opera Mini/9 (Compatible; MSIE:9.0; iPhone; BlackBerry9700; AppleWebKit/24.746; U; en) Presto/2.5.25 Version/10.54";
-  testUserAgent(userAgent, { version: '9.80', operaMini: '9.80', current: 'operaMini' });
+  testUserAgent(userAgent, { version: '9.80', operaMini: '9.80', current: 'opera-mini' });
 });
 
 test("Opera Mobile 9.80", function() {
   var userAgent = "Opera/9.80 (Android 2.3.4; Linux; Opera Mobi/build-1107180945; U; en-GB) Presto/2.8.149 Version/11.10";
-  testUserAgent(userAgent, { version: '9.80', operaMobile: '9.80', current: 'operaMobile' });
+  testUserAgent(userAgent, { version: '9.80', operaMobile: '9.80', current: 'opera-mobile' });
 });
 
 test("Internet Explorer 7.0", function() {
