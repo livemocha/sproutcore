@@ -78,6 +78,11 @@ test("Opera Linux 9.0", function() {
   testUserAgent(userAgent, { version: '9.00', opera: '9.00', current: 'opera' });
 });
 
+test("Opera Windows 10.50", function() {
+  var userAgent = "Opera/9.80 (Windows NT 6.1; U; zh-tw) Presto/2.5.22 Version/10.50";
+  testUserAgent(userAgent, { version: '10.50', opera: '10.50', windows: true, current: 'opera' });
+});
+
 test("Opera Windows 8.65", function() {
   var userAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1) Opera 8.65 [en]";
   testUserAgent(userAgent, { version: '8.65', opera: '8.65', current: 'opera', windows: true });
