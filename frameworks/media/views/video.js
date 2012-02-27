@@ -60,12 +60,28 @@ SC.VideoView = SC.View.extend(
     @property {Array}
   */
   degradeList: ['html5','quicktime', 'flash'],
-  
-  /** 
-    Current time in secs
-    @property {Number}
-  */
-  currentTime: 0, 
+
+  /**
+     Current time in secs
+     
+     @property {Number}
+   */
+  currentTime : function(key, value) {
+    if (!SC.empty(value) && this._currentTime != value) {
+      this._currentTime = value;
+      this.seek(value);
+    }
+
+    return this._currentTime;
+  }.property('_currentTime'),
+
+  /**
+     Current time in secs
+     
+     @property {Number}
+     @private
+   */
+  _currentTime : 0,
   
   /** 
     Duration in secs
@@ -326,7 +342,8 @@ SC.VideoView = SC.View.extend(
     }) ;
     SC.Event.add(videoElem, 'timeupdate', this, function () {
       SC.RunLoop.begin();
-      view.set('currentTime', videoElem.currentTime);
+      view._currentTime = videoElem.currentTime;
+      view.propertyDidChange('currentTime');
       SC.RunLoop.end();
     }) ;
     SC.Event.add(videoElem, 'loadstart', this, function () {
@@ -524,7 +541,8 @@ SC.VideoView = SC.View.extend(
     });
     SC.Event.add(videoElem, 'qt_pause', this, function () {
       SC.RunLoop.begin();
-      view.set('currentTime', vid.GetTime()/vid.GetTimeScale());
+      view._currentTime = vid.GetTime()/vid.GetTimeScale();
+      view.propertyDidChange('currentTime');
       view.set('paused', YES);
       SC.RunLoop.end();
     });
@@ -604,7 +622,8 @@ SC.VideoView = SC.View.extend(
    */
   _qtTimer:function(){
     if(this.loaded==='quicktime' && !this.get('paused')){
-      this.incrementProperty('currentTime');
+      this.incrementProperty('_currentTime');
+      view.propertyDidChange('currentTime');
       this.invokeLater(this._qtTimer, 1000);
     }
   }.observes('paused'),
@@ -618,44 +637,15 @@ SC.VideoView = SC.View.extend(
   seek:function(){
     var timeInSecs, totaltimeInSecs, formattedTime, vid=this._getVideoObject();
     if(this.loaded==='html5'){
-      if(this.get('paused')) vid.currentTime=this.get('currentTime');
+      vid.currentTime=this.get('currentTime');
     }
     if(this.loaded==='quicktime'){
-      if(this.get('paused')) vid.SetTime(this.get('currentTime')*vid.GetTimeScale());
+      vid.SetTime(this.get('currentTime')*vid.GetTimeScale());
     }
     if(this.loaded==='flash'){
-      if(this.get('paused')) vid.setTime(this.get('currentTime'));
-    }
-  }.observes('currentTime'),
-  
-  /** 
-    Should be called once the progress view is clicked to stop the event and
-    later start seeking.
-    
-    @returns {void}
-  */
-  startSeek: function(){
-    if(!this.get('paused')) {
-      SC.Logger.log('startseetk');
-      this.stop();
-      this._wasPlaying = true;
+      vid.setTime(this.get('currentTime'));
     }
   },
-  
-  /** 
-    Should be called once the progress view gets a mouseUp. It will get the
-    player to continue playing if it was playing before starting the seek.
-    
-    @returns {void}
-  */
-  endSeek: function(){
-    if(this._wasPlaying) {
-      SC.Logger.log('startseetk');
-      this.play();
-      this._wasPlaying = false;
-    }
-  },
-  
   
   /** 
     Set the volume of the video.
@@ -775,37 +765,6 @@ SC.VideoView = SC.View.extend(
     return value;
   }
   
-});
-
-/** 
-  Static method mixins.
-*/
-SC.VideoView.mixin({
-  /**
-   * This method returns whether the video tag is supported in the current browser.
-   */
-  isHTML5Supported : function()
-  {
-    if (SC.browser.safari && SC.browser.compareVersion("5.0") < 0) {
-      return NO;
-    }
-    if (SC.browser.chrome && SC.browser.compareVersion("16.0") < 0) {
-      return NO;
-    }
-    if (SC.browser.mozilla && SC.browser.compareVersion("3.6") < 0) {
-      return NO;
-    }
-    if (SC.browser.msie && SC.browser.compareVersion("9.0") < 0) {
-      return NO;
-    }
-    context.push('<video src="'+this.get('value')+'"');
-    if(this.poster){
-      context.push(' poster="'+this.poster+'"');
-    }
-    context.push('/>');
-    this.loaded = 'html5';
-    return;
-  }.property().cacheable()
 });
 
 /** 
