@@ -22,6 +22,23 @@ SC.TextFieldSupport = /** @scope SC.TextFieldSupport */{
   _value: null,
 
   /**
+   * A regular expression pattern that keyed characters will be matched
+   * against on keyup. If they match, they'll be allowed.
+   */
+  restrict : null,
+
+  /**
+   * The restrict regex object.
+   */
+  restrictRegex : function() {
+    var restrict = this.get('restrict');
+    if (SC.empty(restrict)) {
+      return null;
+    }
+    return new RegExp(restrict);
+  }.property('restrict').cacheable(),
+
+  /**
     The problem this property is trying to solve is twofold:
 
     1. Make it possible to set the value of a text field that has
@@ -119,6 +136,15 @@ SC.TextFieldSupport = /** @scope SC.TextFieldSupport */{
 
   domValueDidChange: function(jquery) {
     this.set('value', jquery.val());
+  },
+
+  keyDown : function(event) {
+    var regex = this.get('restrictRegex');
+    var character = event.getCharString();
+    if (SC.empty(character) || (!SC.empty(regex) && !character.match(regex))) {
+      return YES;
+    }
+    return NO;
   },
 
   keyUp: function(event) {
