@@ -253,7 +253,8 @@ SC.TemplateCollectionView = SC.TemplateView.extend(
       itemOptions = this.get('itemViewOptions') || {};
 
       elem = this.$();
-      insertAtElement = elem.find('li')[start-1] || null;
+      var itemTagName = this.get('itemTagName');
+      insertAtElement = elem.find(itemTagName)[start - 1] || null;
       len = addedObjects.get('length');
 
       // TODO: This logic is duplicated from the view helper. Refactor
