@@ -331,6 +331,10 @@ SC.TemplateCollectionView = SC.TemplateView.extend(
       case 'tbody':
       case 'tfoot':
         return 'tr';
+      case 'div':
+        return 'div';
+      case 'p':
+        return 'span';
       case 'select':
         return 'option';
       default:
