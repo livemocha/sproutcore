@@ -37,7 +37,7 @@ sc_require('system/query');
   @see SC.RecordAttribute
   @since SproutCore 1.0
 */
-SC.Record = SC.Object.extend(
+SC.Record = SC.Object.extend(SC.ErrorSupport,
 /** @scope SC.Record.prototype */ {
 
   /**

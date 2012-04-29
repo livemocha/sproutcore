@@ -53,7 +53,7 @@ sc_require('models/record');
   @since SproutCore 1.0
 */
 
-SC.RecordArray = SC.Object.extend(SC.Enumerable, SC.Array,
+SC.RecordArray = SC.Object.extend(SC.Enumerable, SC.Array, SC.ErrorSupport,
   /** @scope SC.RecordArray.prototype */ {
 
   /**

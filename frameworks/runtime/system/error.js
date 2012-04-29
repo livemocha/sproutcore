@@ -52,7 +52,9 @@ SC.ErrorSupport = {
     
     @type SC.Error
    */
-  errorObject: null
+  errorObject: function() {
+    return this;
+  }.property().cacheable(),
 };
 
 /**
@@ -103,17 +105,6 @@ SC.Error = SC.Object.extend( SC.ErrorSupport,
     @type String
   */
   message: '',
-
-  /**
-    The original error object.  Normally this will return the receiver.
-    However, sometimes another object will masquerade as an error; this gives
-    you a way to get at the underlying error.
-
-    @type SC.Error
-  */
-  errorObject: function() {
-    return this;
-  }.property().cacheable(),
 
   /**
     Human readable name of the item with the error.

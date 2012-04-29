@@ -23,7 +23,6 @@ test("SC.ErrorSupport must have basic mixin properties.", function() {
   equals(SC.ErrorSupport.errorValue, null, "errorValue must default to null");
   
   ok(SC.ErrorSupport.hasOwnProperty('errorObject'), "Must have errorObject Property");
-  equals(SC.ErrorSupport.errorObject, null, "errorObject must default to null");
 });
 
 test("Usage of the mixin must provide correct responses using utility methods.", function() {
@@ -39,24 +38,25 @@ test("Usage of the mixin must provide correct responses using utility methods.",
   equals(SC.ok(testError), YES, "Test Error is in an error state");
   equals(SC.$ok(testError), YES, "Test Error is in an error state");
   
+  equals(testError.get('errorObject'), testError, "Default errorObject implementation must return self.");
 });
 
 test("SC.Error.desc creates an error instance with description,label and code", function() {
-  var c = SC.Error.desc('This is an error instance','Error Instance', "FOO", 99999);
-  equals(SC.T_ERROR,SC.typeOf(c),'Error instance');
-  equals('This is an error instance',c.message,'Description');
-  equals('Error Instance',c.label,'Label');
+  var c = SC.Error.desc('This is an error instance', 'Error Instance', "FOO", 99999);
+  equals(SC.T_ERROR, SC.typeOf(c), 'Error instance');
+  equals('This is an error instance', c.message, 'Description');
+  equals('Error Instance', c.label, 'Label');
   equals(c.get('errorValue'), "FOO", 'error value should be set');
-  equals(99999,c.code,'Code');
+  equals(99999, c.code, 'Code');
 });
 
-test("SC.$error creates an error instance with description,label and code",function(){
-  var d = SC.$error('This is a new error instance','New Error Instance', "FOO", 99999);
-  equals(SC.T_ERROR,SC.typeOf(d),'New Error instance');
-  equals('This is a new error instance',d.message,'Description');
-  equals('New Error Instance',d.label,'Label');
+test("SC.$error creates an error instance with description,label and code", function() {
+  var d = SC.$error('This is a new error instance', 'New Error Instance', "FOO", 99999);
+  equals(SC.T_ERROR, SC.typeOf(d), 'New Error instance');
+  equals('This is a new error instance', d.message, 'Description');
+  equals('New Error Instance', d.label, 'Label');
   equals(d.get('errorValue'), "FOO", 'error value should be set');
-  equals(99999,d.code,'Code');
+  equals(99999, d.code, 'Code');
 });
 
 test("SC.$ok should return YES if the passed value is an error object or false", function() {
@@ -66,9 +66,11 @@ test("SC.$ok should return YES if the passed value is an error object or false",
   ok(SC.$ok(undefined), '$ok(undefined) should be YES');
   ok(SC.$ok("foo"), '$ok(foo) should be YES');
   ok(!SC.$ok(SC.$error("foo")), '$ok(SC.Error) should be NO');
-
+  
   ok(!SC.$ok(new SC.Error()), '$ok(Error) should be NO');
-  ok(!SC.$ok(SC.Object.create({ isError: YES })), '$ok({ isError: YES }) should be NO');
+  ok(!SC.$ok(SC.Object.create({
+    isError: YES
+  })), '$ok({ isError: YES }) should be NO');
 });
 
 test("SC.$val should return the error value if it has one", function() {
@@ -80,7 +82,10 @@ test("SC.$val should return the error value if it has one", function() {
   equals(SC.val(SC.$error("foo", "FOO", "BAZ")), "BAZ", 'val(SC.Error) should be BAZ');
   equals(SC.val(SC.$error("foo", "FOO")), undefined, 'val(SC.Error) should be undefined');
   equals(SC.val(new SC.Error()), null, 'val(Error) should be null');
-  equals(SC.val(SC.Object.create({ isError: YES, errorValue: "BAR" })), "BAR", 'val({ isError: YES, errorValue: BAR }) should be BAR');
+  equals(SC.val(SC.Object.create({
+    isError: YES,
+    errorValue: "BAR"
+  })), "BAR", 'val({ isError: YES, errorValue: BAR }) should be BAR');
 });
 
 test("errorObject property should return the error itself", function() {

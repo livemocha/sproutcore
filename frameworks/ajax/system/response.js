@@ -19,7 +19,7 @@
   @extend SC.Object
   @since SproutCore 1.0
 */
-SC.Response = SC.Object.extend(
+SC.Response = SC.Object.extend(SC.ErrorSupport,
 /** @scope SC.Response.prototype */ {
 
   /**
@@ -28,33 +28,6 @@ SC.Response = SC.Object.extend(
     @type Boolean
   */
   isResponse: YES,
-
-  /**
-    Becomes true if there was a failure.  Makes this into an error object.
-
-    @type Boolean
-    @default NO
-  */
-  isError: NO,
-
-  /**
-    Always the current response
-
-    @field
-    @type SC.Response
-    @default `this`
-  */
-  errorValue: function() {
-    return this;
-  }.property().cacheable(),
-
-  /**
-    The error object generated when this becomes an error
-
-    @type SC.Error
-    @default null
-  */
-  errorObject: null,
 
   /**
     Request used to generate this response.  This is a copy of the original
