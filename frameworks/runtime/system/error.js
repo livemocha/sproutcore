@@ -10,6 +10,53 @@ sc_require('ext/function');
 
 /**
   @class
+  
+  A mixin class that adds all properties necessary for SC.Error support.
+  
+  Faking Error Objects
+  ---
+
+  You can make any object you want to be treated like an Error object
+  by simply using this mixin.  If you set isError to YES,
+  then calling SC.ok(obj) on your object will return NO. If isError is YES,
+  then SC.val(obj) will return your errorValue property instead of the receiver.
+  
+  When using SC.typeOf(obj), SC.T_ERROR will only be returned if the obj
+  is an instance of SC.Error
+  
+  @see SC.Error
+  @since SproutCore 1.9
+ */
+SC.ErrorSupport = {
+  
+  // ====================== SC.Error support ======================
+  /**
+    Is this object in an error state?
+    
+    @type Boolean
+   */
+  isError: NO,
+  
+  /**
+    The value the error represents. This is used when wrapping a value inside
+    of an error to represent the validation failure.
+    
+    @type Object
+   */
+  errorValue: null,
+  
+  /**
+    The original error object. Normally this will return the receiver. However,
+    sometimes another object will masquerade as an error; this gives you a way
+    to get at the underlying error.
+    
+    @type SC.Error
+   */
+  errorObject: null
+};
+
+/**
+  @class
 
   An error, used to represent an error state.
 
@@ -27,19 +74,19 @@ sc_require('ext/function');
   Faking Error Objects
   ---
 
-  You can actually make any object you want to be treated like an Error object
-  by simply implementing two properties: isError and errorValue.  If you
-  set isError to YES, then calling SC.ok(obj) on your object will return NO.
-  If isError is YES, then SC.val(obj) will return your errorValue property
-  instead of the receiver.
+  You can make any object you want to be treated like an Error object
+  by simply using the SC.ErrorSupport mixin.  If you set isError to YES,
+  then calling SC.ok(obj) on your object will return NO. If isError is YES,
+  then SC.val(obj) will return your errorValue property instead of the receiver.
   
   When using SC.typeOf(obj), SC.T_ERROR will only be returned if the obj
   is an instance of SC.Error
-
+  
   @extends SC.Object
+  @extends SC.ErrorSupport
   @since SproutCore 1.0
 */
-SC.Error = SC.Object.extend(
+SC.Error = SC.Object.extend( SC.ErrorSupport,
 /** @scope SC.Error.prototype */ {
 
   /**
@@ -56,14 +103,6 @@ SC.Error = SC.Object.extend(
     @type String
   */
   message: '',
-
-  /**
-    The value the error represents.  This is used when wrapping a value inside
-    of an error to represent the validation failure.
-
-    @type Object
-  */
-  errorValue: null,
 
   /**
     The original error object.  Normally this will return the receiver.

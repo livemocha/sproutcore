@@ -11,6 +11,36 @@
 
 module("SC.ERROR");
 
+test("SC.ErrorSupport must exist.", function() {
+  ok(SC.ErrorSupport);
+});
+
+test("SC.ErrorSupport must have basic mixin properties.", function() {
+  ok(SC.ErrorSupport.hasOwnProperty('isError'), "Must have isError Property");
+  equals(SC.ErrorSupport.isError, NO, "isError must default to 'NO'");
+  
+  ok(SC.ErrorSupport.hasOwnProperty('errorValue'), "Must have errorValue Property");
+  equals(SC.ErrorSupport.errorValue, null, "errorValue must default to null");
+  
+  ok(SC.ErrorSupport.hasOwnProperty('errorObject'), "Must have errorObject Property");
+  equals(SC.ErrorSupport.errorObject, null, "errorObject must default to null");
+});
+
+test("Usage of the mixin must provide correct responses using utility methods.", function() {
+  var testError = SC.Object.create(SC.ErrorSupport, {
+    isError: YES
+  });
+  
+  equals(SC.ok(testError), NO, "Test Error is in an error state");
+  equals(SC.$ok(testError), NO, "Test Error is in an error state");
+  
+  // Switch to isError = false
+  testError.set('isError', NO);
+  equals(SC.ok(testError), YES, "Test Error is in an error state");
+  equals(SC.$ok(testError), YES, "Test Error is in an error state");
+  
+});
+
 test("SC.Error.desc creates an error instance with description,label and code", function() {
   var c = SC.Error.desc('This is an error instance','Error Instance', "FOO", 99999);
   equals(SC.T_ERROR,SC.typeOf(c),'Error instance');
